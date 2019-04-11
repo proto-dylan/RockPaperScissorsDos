@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>RockPaperScissors</title>
+    <meta charset="UTF-8">
+    <title>RockPaperScissorsDos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-</div class = 'buttons'>
+<img src="https://boardgamestrategyblog.files.wordpress.com/2016/12/rock-paper-scissors.png?w=653" alt = "rockpaperscissors">
+
+<div class = 'buttons'>
 
     <div data-input = "rock" class = "button">
-        <input id="rock" type = "button" value = "ROCK">     
+        <input id="rock" class = "btn" type = "button" value = "ROCK">     
     </div>
     <div data-input = "paper" class = "button">
-        <input id="paper" type = "button" value = "PAPER">     
+        <input id="paper" class = "btn" type = "button" value = "PAPER">     
     </div>
     <div data-input = "scissors" class = "button">
-        <input id="scissors" type = "button" value = "SCISSORS">     
+        <input id="scissors" class = "btn" type = "button" value = "SCISSORS">     
     </div>
-
+</div>
+<div> Palyer score: <p id = "playerScore"></p></div>
+<div> Computer score: <p id = "computerScore"></p></div>
+<div> Round: <p id = "round" ></p></div>
 
 
     <script>
@@ -33,6 +39,7 @@
 
         function rock(){
             playRound("rock");
+
         }
         function paper(){
             playRound("paper");
@@ -52,29 +59,53 @@
         }
 
         function playRound (input) {
+
             let playerChoice = input;
             let computerChoice = computerPlay();
+            let roundPoint = 0;
+
+            const playerScore = document.querySelector('#playerScore')
+            const computerScore = document.querySelector('#computerScore')
+
             if (playerChoice === computerChoice) {
-                console.log("It's a tie! Try again");
+                alert("It's a tie! Try again");
+
             }else if (playerChoice === 'rock' && computerChoice === 'paper') {
                 computerPoint++;
-                console.log("the computer won with " +computerChoice+ " to your " +playerChoice);
+                rountPoint = 1;
+                alert("the computer won with " +computerChoice+ " to your " +playerChoice);
             }else if (playerChoice === 'rock' && computerChoice === 'scissors') {
                 playerPoint++;
-                console.log("You WON! " + playerChoice + " always beats " +computerChoice);
+                roundPoint = 2;
+                alert("You WON! " + playerChoice + " always beats " +computerChoice);
             }else if (playerChoice === 'paper' && computerChoice === 'rock') {
                 playerPoint++;
-                console.log("You WON! " + playerChoice + " always beats " +computerChoice);
+                roundPoint = 2;
+                alert("You WON! " + playerChoice + " always beats " +computerChoice);
             }else if (playerChoice === 'paper' && computerChoice === 'scissors') {
                 computerPoint++;
-                console.log("the computer won with " +computerChoice+ " to your " +playerChoice);
+                roundPoint = 1;
+                alert("the computer won with " +computerChoice+ " to your " +playerChoice);
             }else if (playerChoice === 'scissors' && computerChoice === 'rock') {
                 computerPoint++;
-                console.log("the computer won with " +computerChoice+ " to your " +playerChoice);
+                roundPoint = 1;
+                alert("the computer won with " +computerChoice+ " to your " +playerChoice);
             }else if (playerChoice === 'scissors' && computerChoice === 'paper') {
                 playerPoint++;
-                console.log("You WON! " + playerChoice + " always beats " +computerChoice);
+                roundPoint = 2;
+                alert("You WON! " + playerChoice + " always beats " +computerChoice);
            }
+
+           if(roundPoint == 0){
+               return "tie";
+           }
+           else if(roundPoint == 1){
+               computerScore.appendChild(computerScore);
+           }
+           else {
+               playerScore.appendChild(playerScore);
+           }
+
         }
 
         
