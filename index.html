@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <h3>(hu)MAN VS MACHINE</h3>
     <img src="https://boardgamestrategyblog.files.wordpress.com/2016/12/rock-paper-scissors.png?w=653" alt = "rockpaperscissors">
     <div class = 'buttons'>
 
@@ -20,35 +21,25 @@
             <input id="scissors" class = "btn" type = "button" value = "SCISSORS">     
         </div>
     </div>
-    <div class = 'scoreBoard'>
-        <ul>
-            Round Number: 
-            <p id = "round"></p>
-        </ul>
-        
-        
-        <ul>
-            Player Score: 
-            <p id = "playerScore"></p>
-        </ul>
-        <ul>
-            Computer Score: 
-            <p id = "computerScore"></p> 
-        </ul>
-        
-    </div>
+    <div id = "resultDiv"></div>
 </body>
 
 <script>
-        function removeTransition(e) {
-            if (e.propertyName !== 'transform') return;
-            e.target.classList.remove('clicking');
-        }
+      
 
 
         let playerPoint = 0;
         let computerPoint = 0;
         let roundNumber = 1;
+        let roundResult ;
+        let resultShown = 0;
+
+        const message = document.createElement('p');
+        
+        const h1 = document.querySelector('h1');
+
+        document.body.appendChild(resultDiv);
+
 
         document.getElementById("rock").addEventListener("click", rock);
         document.getElementById("paper").addEventListener("click", paper);
@@ -64,6 +55,17 @@
             playRound("scissors", playerPoint, computerPoint);
         }
 
+        function showResult(computerChoice, roundResult, playerPoint, computerPoint){
+            const resultDiv = document.getElementById('resultDiv')
+            const result = document.createElement('div');
+            result.id = "result";
+            let resultOut = '<br>Computer chose: ' +computerChoice+ '<br><br>' + roundResult+
+                '<br><br>Player score: ' +playerPoint+ '<br><br>' + 'computer score: ' + computerPoint;
+            result.innerHTML = resultOut;
+            resultDiv.appendChild(result);
+            resultShown = 1;
+            }
+
         function computerPlay () {
            const choiceNumber = Math.floor(Math.random() * 3);
            if (choiceNumber === 0) {
@@ -72,6 +74,13 @@
                 return 'paper';
             }
             return 'scissors';
+        }
+
+        function reset(){
+            computerPoint=0;
+            playerPoint=0;
+            roundNumber=0;
+            alert("Play again?");
         }
 
         function playRound (input, playerPoint, computerPoint) {
@@ -85,70 +94,60 @@
             console.log(playerChoice);
 
 
-
-
-            if(playerChoice === computerChoice){
-                roundpoint = 0;
-            }else if (playerChoice === 'rock' && computerChoice === 'paper') {
-                computerPoint++;
-                roundPoint = 1;
-                
-            }else if (playerChoice === 'rock' && computerChoice === 'scissors') {
-                playerPoint++;
-                roundPoint = 2;
-                
-            }else if (playerChoice === 'paper' && computerChoice === 'rock') {
-                playerPoint++;
-                roundPoint = 2;
-                
-            }else if (playerChoice === 'paper' && computerChoice === 'scissors') {
-                computerPoint++;
-                roundPoint = 1;
-                
-            }else if (playerChoice === 'scissors' && computerChoice === 'rock') {
-                computerPoint++;
-                roundPoint = 1;
-                
-            }else if (playerChoice === 'scissors' && computerChoice === 'paper') {
-                playerPoint++;
-                roundPoint = 2;
-                
+            if(resultShown===1){
+                const resultDiv = document.getElementById('resultDiv')
+                const result = document.getElementById('result')
+                resultDiv.removeChild(result);
+          
             }
+
+            if(playerPoint<5 && computerPoint<5){
+                if ((playerChoice === 'rock' && computerChoice === 'paper')||
+                    (playerChoice === 'paper' && computerChoice === 'scissors')|| 
+                    (playerChoice === 'scissors' && computerChoice === 'rock')) {
+                        computerPoint++;
+                        roundPoint = 1;  
+                        roundResult = `You Lose! ${computerChoice} beats ${playerChoice}`;
+                            
+                }else if((playerChoice === 'scissors' && computerChoice === 'paper') ||
+                    (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                    (playerChoice === 'paper' && computerChoice === 'rock')){
+                        playerPoint++;
+                        roundPoint = 2;
+                        roundResult = `You Win! ${playerChoice} beats ${computerChoice}`;  
+                }else {
+                    roundpoint = 0;
+                    roundResult = 'Tie!'
+                }
+                if(playerPoint===5){
+                    roundResult = 'You Win! Game over';
+                    reset();
+                }else if(computerPoint===5){
+                    roundResult = 'You Lose! Game over';
+                    reset();
+            }
+                
+            showResult (computerChoice, roundResult, playerPoint, computerPoint);
+            
 
             
 
             console.log(roundPoint);
 
 
-            if( roundNumber <= 5){
+          /*  if( roundNumber <= 5){
                 document.getElementById("playerScore").innerHTML = playerPoint;
                 document.getElementById("computerScore").innerHTML = computerPoint;
                 document.getElementById("round").innerHTML = roundNumber;
-                roundNumber ++;
+                
             }else {
                 alert("game over, play again?")
                 roundNumber = 0;
                 playerPoint = 0;
                 computerPoint = 0;
-            }
+            }*/
 
-        
-
-
-            
-  
-            
-            
-          
-            
-            
-
-
-
-
-        }
-
-        
+        }       
         
     </script>
 
