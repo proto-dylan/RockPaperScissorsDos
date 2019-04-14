@@ -8,7 +8,12 @@
 
 <body>
     <h3>(hu)MAN VS MACHINE</h3>
+    <div data-input = "newGame" class = "button" value = "NEW GAME">
+        <input id = "newGame" class= "btn" type = "button" value = "NEW GAME";>
+    </div>
     <img src="https://boardgamestrategyblog.files.wordpress.com/2016/12/rock-paper-scissors.png?w=653" alt = "rockpaperscissors">
+   
+  
     <div class = 'buttons'>
 
         <div data-input = "rock" class = "button">
@@ -25,20 +30,17 @@
 </body>
 
 <script>
-      
-
-
         let playerPoint = 0;
         let computerPoint = 0;
         let roundNumber = 1;
         let roundResult ;
         let resultShown = 0;
 
-        const message = document.createElement('p');
+       // const message = document.createElement('p');
         
-        const h1 = document.querySelector('h1');
+        //const h1 = document.querySelector('h1');
 
-        document.body.appendChild(resultDiv);
+        //document.body.appendChild(resultDiv);
 
 
         document.getElementById("rock").addEventListener("click", rock);
@@ -46,25 +48,39 @@
         document.getElementById("scissors").addEventListener("click", scissors);
 
         function rock(){
-            playRound("rock", playerPoint, computerPoint);
+            playRound("rock", playerPoint, computerPoint, roundNumber);
         }
         function paper(){
-            playRound("paper", playerPoint, computerPoint);
+            playRound("paper", playerPoint, computerPoint, roundNumber);
         }
         function scissors(){
-            playRound("scissors", playerPoint, computerPoint);
+            playRound("scissors", playerPoint, computerPoint, roundNumber);
         }
 
         function showResult(computerChoice, roundResult, playerPoint, computerPoint){
             const resultDiv = document.getElementById('resultDiv')
             const result = document.createElement('div');
             result.id = "result";
-            let resultOut = '<br>Computer chose: ' +computerChoice+ '<br><br>' + roundResult+
+            let resultOut = '<br>Round: ' +roundNumber+ '<br><br>Computer chose: ' +computerChoice+ '<br><br>' + roundResult+
                 '<br><br>Player score: ' +playerPoint+ '<br><br>' + 'computer score: ' + computerPoint;
             result.innerHTML = resultOut;
             resultDiv.appendChild(result);
             resultShown = 1;
+           
+            if (playerPoint === 5 || computerPoint === 5) {
+                if(playerPoint === 5){
+                    clear();
+                    roundResult = `Congratulations, you have utterly defeated the robot overlords ${playerPoint} to ${computerPoint} `;
+                    reset();
+                }else if(computerPoint === 5){
+                    clear();
+                    roundResult = `Humanity will forever remember this terrible loss of ${computerPoint} to ${playerPoint} `;
+                    reset();
+                }
+                playerScore = 0;
+                computerScore = 0;
             }
+        }
 
         function computerPlay () {
            const choiceNumber = Math.floor(Math.random() * 3);
@@ -82,8 +98,13 @@
             roundNumber=0;
             alert("Play again?");
         }
+        function clear(){
+            const resultDiv = document.getElementById('resultDiv')
+            const result = document.getElementById('result')
+            resultDiv.removeChild(result);
+        }
 
-        function playRound (input, playerPoint, computerPoint) {
+        function playRound (input, playerPoint, computerPoint, roundNumber) {
 
             let playerChoice = input;
             let computerChoice = computerPlay();
@@ -95,57 +116,32 @@
 
 
             if(resultShown===1){
-                const resultDiv = document.getElementById('resultDiv')
-                const result = document.getElementById('result')
-                resultDiv.removeChild(result);
-          
+                clear();
             }
 
-            if(playerPoint<5 && computerPoint<5){
-                if ((playerChoice === 'rock' && computerChoice === 'paper')||
-                    (playerChoice === 'paper' && computerChoice === 'scissors')|| 
-                    (playerChoice === 'scissors' && computerChoice === 'rock')) {
-                        computerPoint++;
-                        roundPoint = 1;  
-                        roundResult = `You Lose! ${computerChoice} beats ${playerChoice}`;
-                            
-                }else if((playerChoice === 'scissors' && computerChoice === 'paper') ||
-                    (playerChoice === 'rock' && computerChoice === 'scissors') ||
-                    (playerChoice === 'paper' && computerChoice === 'rock')){
-                        playerPoint++;
-                        roundPoint = 2;
-                        roundResult = `You Win! ${playerChoice} beats ${computerChoice}`;  
-                }else {
-                    roundpoint = 0;
-                    roundResult = 'Tie!'
-                }
-                if(playerPoint===5){
-                    roundResult = 'You Win! Game over';
-                    reset();
-                }else if(computerPoint===5){
-                    roundResult = 'You Lose! Game over';
-                    reset();
-            }
-                
-            showResult (computerChoice, roundResult, playerPoint, computerPoint);
-            
-
-            
-
-            console.log(roundPoint);
-
-
-          /*  if( roundNumber <= 5){
-                document.getElementById("playerScore").innerHTML = playerPoint;
-                document.getElementById("computerScore").innerHTML = computerPoint;
-                document.getElementById("round").innerHTML = roundNumber;
-                
+            if ((playerChoice === 'rock' && computerChoice === 'paper')||
+                (playerChoice === 'paper' && computerChoice === 'scissors')|| 
+                (playerChoice === 'scissors' && computerChoice === 'rock')) {
+                    computerPoint++;
+                    roundPoint = 1;  
+                    roundResult = `You Lose! ${computerChoice} beats ${playerChoice}`;
+                        
+            }else if((playerChoice === 'scissors' && computerChoice === 'paper') ||
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock')){
+                    playerPoint++;
+                    roundPoint = 2;
+                    roundResult = `You Win! ${playerChoice} beats ${computerChoice}`;  
             }else {
-                alert("game over, play again?")
-                roundNumber = 0;
-                playerPoint = 0;
-                computerPoint = 0;
-            }*/
+                roundpoint = 0;
+                roundResult = 'Tie!'
+            } 
+            roundNumber ++;
+            showResult (computerChoice, roundResult, playerPoint, computerPoint);          
+        
+            return computerPoint;
+            return playerPoint;
+            console.log(roundPoint);
 
         }       
         
